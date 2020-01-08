@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
 )
 
@@ -94,8 +95,15 @@ type BoxDecoder func(r io.Reader) (Box, error)
 func DecodeBox(h BoxHeader, r io.Reader) (Box, error) {
 	d := decoders[h.Type]
 	if d == nil {
-		log.Printf("Error while decoding %s : unknown box type", h.Type)
-		return nil, ErrUnknownBoxType
+		if h.Size < BoxHeaderSize {
+			return nil, ErrBadFormat
+		}
+		//skip the unknown box type
+		b, _ := ioutil.ReadAll(io.LimitReader(r, int64(h.Size-BoxHeaderSize)))
+		if len(b) != int(h.Size-BoxHeaderSize) {
+			return nil, ErrBadFormat
+		}
+		return nil, nil
 	}
 	b, err := d(io.LimitReader(r, int64(h.Size-BoxHeaderSize)))
 	if err != nil {

@@ -39,6 +39,9 @@ LoopBoxes:
 		if err != nil {
 			return nil, err
 		}
+		if box == nil {
+			continue
+		}
 		v.boxes = append(v.boxes, box)
 		switch h.Type {
 		case "ftyp":
