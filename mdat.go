@@ -1,6 +1,10 @@
 package mp4
 
-import "io"
+import (
+	"bytes"
+	"io"
+	"io/ioutil"
+)
 
 // Media Data Box (mdat - optional)
 //
@@ -15,10 +19,14 @@ type MdatBox struct {
 }
 
 func DecodeMdat(r io.Reader) (Box, error) {
-	// r is a LimitedReader
-	if lr, limited := r.(*io.LimitedReader); limited {
-		r = lr.R
+	b, err := ioutil.ReadAll(r)
+
+	if err != nil {
+		return nil, err
 	}
+
+	r = bytes.NewReader(b)
+
 	return &MdatBox{r: r}, nil
 }
 

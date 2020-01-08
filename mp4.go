@@ -27,6 +27,12 @@ LoopBoxes:
 	for {
 		h, err := DecodeHeader(r)
 		if err != nil {
+			if err != nil {
+				if err == io.EOF {
+					break LoopBoxes
+				}
+				return nil, err
+			}
 			return nil, err
 		}
 		box, err := DecodeBox(h, r)
@@ -42,6 +48,10 @@ LoopBoxes:
 		case "mdat":
 			v.Mdat = box.(*MdatBox)
 			v.Mdat.ContentSize = h.Size - BoxHeaderSize
+			break LoopBoxes
+		}
+
+		if v.Ftyp != nil && v.Moov != nil && v.Mdat != nil {
 			break LoopBoxes
 		}
 	}
