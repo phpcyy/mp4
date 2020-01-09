@@ -6,8 +6,8 @@ import (
 	"time"
 
 	cli "github.com/jawher/mow.cli"
-	"github.com/jfbus/mp4"
-	"github.com/jfbus/mp4/filter"
+	"github.com/phpcyy/mp4"
+	"github.com/phpcyy/mp4/filter"
 )
 
 func main() {
