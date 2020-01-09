@@ -51,7 +51,6 @@ LoopBoxes:
 		case "mdat":
 			v.Mdat = box.(*MdatBox)
 			v.Mdat.ContentSize = h.Size - BoxHeaderSize
-			break LoopBoxes
 		}
 
 		if v.Ftyp != nil && v.Moov != nil && v.Mdat != nil {

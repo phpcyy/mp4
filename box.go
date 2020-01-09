@@ -128,6 +128,10 @@ func DecodeContainer(r io.Reader) ([]Box, error) {
 		if err != nil {
 			return l, err
 		}
+
+		if b == nil {
+			continue
+		}
 		l = append(l, b)
 	}
 }
